@@ -7,14 +7,21 @@ function Header() {
     <header className="header">
       <h1 className="graffiti-title">The Cassette Deck</h1>
       <nav className="nav">
-        <ul>
-          <li>Home</li>
-          <li>Friends</li>
-          <li>Profile</li>
-        </ul>
+        <button type="button">Home</button>
+        <button type="button">Profile</button>
+        <button type="button">Friends</button>
       </nav>
     </header>
   );
 }
 
+const App = () => {
+  return (
+    <div>
+      <button type="button">Click Me</button>
+    </div>
+  );
+};
+
 export default Header;
+ 
