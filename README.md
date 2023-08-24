@@ -1,7 +1,16 @@
+# Logo Generator
+
+![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
+
 # The-Cassette-Deck
 
-# pwa-text-editor
-homework challenge 19
+- [Description](#description)
+- [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
+- [Contributing](#contributing)
+- [Tests](#tests)
+- [Questions](#questions)
 
 ## Description
 
@@ -25,7 +34,7 @@ MIT
 
 ## Links
 
-Github Repo: <br>
+For more information, visit our GitHub page: [TheCassetteDeck](https://github.com/orngmrmld/The-Cassette-Deck)
 Deployed Link: 
 
 ## Mockup Example Product 
