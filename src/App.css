@@ -1,0 +1,27 @@
+/* App.css */
+/* Add your global app styles here */
+.App {
+  text-align: center;
+}
+
+/* Header.css */
+/* Add styles for the header component here */
+.header {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+}
+
+.header h1 {
+  font-size: 24px;
+}
+
+.nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.nav li {
+  display: inline;
+  margin-right: 20px;
+}
