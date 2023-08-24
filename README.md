@@ -21,6 +21,7 @@ So that...they can enjoy and rate my playlists by using the vibe meter
 
 ## License
 
+MIT
 
 ## Links
 
