@@ -1,0 +1,22 @@
+.comment-bubble {
+  background-color: #F0F0F0;
+  border: 2px solid #ddd; /* Add a border to create the box effect */
+  border-radius: 12px;
+  padding: 20px; /* Increase padding for a bigger box */
+  width: 350px; /* Set a fixed width for consistency */
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+}
+.comment-author {
+  font-weight: bold;
+  margin-bottom: 8px; /* Add more space below author */
+  text-align: center;
+}
+.comment-text {
+  font-size: 16px; /* Increase font size for better readability */
+  text-align: center;
+}

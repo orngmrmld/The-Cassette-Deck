@@ -30,7 +30,7 @@
 // `;
 
 // export const ADD_COMMENT = gql`
-//   mutation ($_id: String!, $techNum: Int!) {
+//   mutation ($_id: String!) {
     
    
 //     }
