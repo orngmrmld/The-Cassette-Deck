@@ -1,0 +1,9 @@
+/* Add spacing between components */
+.spacer {
+  height: 20px; /* Adjust as needed */
+}
+
+/* Add your global app styles here */
+.App {
+  text-align: center;
+}

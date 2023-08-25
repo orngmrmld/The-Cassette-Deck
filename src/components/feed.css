@@ -1,0 +1,83 @@
+/* Add styling for the feed container */
+.feed {
+  height: 450px; 
+  overflow-y: scroll; 
+  border: 1px solid #ccc;
+  background-image: black;
+}
+
+/* Styling for individual posts */
+.post {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.feed-content {
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.feed-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.feed-item {
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/* Add styling for the scroll feed container */
+.scroll-feed {
+  width: 700px;
+  height: 600px; 
+  border: 2px solid #ccc;
+  background-color: #f9f9f9;
+  margin: 0 auto; 
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.2); 
+}
+
+/* Styling for individual scroll items */
+.scroll-item {
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/* Styling for the comment section */
+.comment-section {
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.comment-section input[type="text"] {
+  width: 80%;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.comment-section button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.comment {
+  margin-top: 10px;
+}
+
