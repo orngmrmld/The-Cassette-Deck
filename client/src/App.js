@@ -63,15 +63,18 @@ function App() {
     // console.log("User ID is" + userID);
     // var playlists = await.fetch('')
 
-    //get playlist by playlist id 
-    var playlist = await fetch('https://api.spotify.com/v1/playlists/' + playlistID, searchParameters)
-      .then(response => response.json())
+    //     console.log("User ID is" + userID);
+//     var playlists = await fetch('')
 
+    //get playlist by playlist id 
+//     var playlist = await fetch('https://api.spotify.com/v1/playlists/' + playlistID, searchParameters)
+//       .then(response => response.json())
+    
     // Get request with User ID grab all playlists from that user
 
     // Display playlist cover art
-    var coverArt = await fetch('https://api.spotify.com/v1/playlists/' + playlistID + 'images', searchParameters)
-      .then(response => response.json())
+//     var coverArt = await fetch('https://api.spotify.com/v1/playlists/' + playlistID + 'images', searchParameters)
+//       .then(response => response.json())
 
   }
 
