@@ -45,35 +45,35 @@ function App() {
   };
 
   //search function to find playlist
-  async function search(){
-    console.log("search for " + searchInput);
+  // async function search(){
+  //   console.log("search for " + searchInput);
 
-    // Get request using search to get the User ID
-    var searchParameters = {
-      method: 'GET' ,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization' : 'Bearer' + accessToken
-      }
-    }
-    //var userID = await fetch('https://api.spotify.com/v1/search?q=' + searchInput + '&type=user', userParameters)
-      // .then(response => response.json())
-      // .then(data => {return data.users.items[0].id})
+  //   // Get request using search to get the User ID
+  //   var searchParameters = {
+  //     method: 'GET' ,
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization' : 'Bearer' + accessToken
+  //     }
+  //   }
+  //   //var userID = await fetch('https://api.spotify.com/v1/search?q=' + searchInput + '&type=user', userParameters)
+  //     // .then(response => response.json())
+  //     // .then(data => {return data.users.items[0].id})
 
-    // console.log("User ID is" + userID);
-    // var playlists = await.fetch('')
+  //   // console.log("User ID is" + userID);
+  //   // var playlists = await.fetch('')
 
-    //get playlist by playlist id 
-    var playlist = await fetch('https://api.spotify.com/v1/playlists/' + playlistID, searchParameters)
-      .then(response => response.json())
+  //   //get playlist by playlist id 
+  //   var playlist = await fetch('https://api.spotify.com/v1/playlists/' + playlistID, searchParameters)
+  //     .then(response => response.json())
 
-    // Get request with User ID grab all playlists from that user
+  //   // Get request with User ID grab all playlists from that user
 
-    // Display playlist cover art
-    var coverArt = await fetch('https://api.spotify.com/v1/playlists/' + playlistID + 'images', searchParameters)
-      .then(response => response.json())
+  //   // Display playlist cover art
+  //   var coverArt = await fetch('https://api.spotify.com/v1/playlists/' + playlistID + 'images', searchParameters)
+  //     .then(response => response.json())
 
-  }
+  // }
 
   return (
     <div className="App">
