@@ -3,7 +3,7 @@ import './App.css';
 import CommentBubble from './components/commentbubble';
 import Header from './components/header';
 const clientId = "3864bcca1c1d4ceeae0bb170d9dc0fca";
-const clientSecret = "f67857addec046b893a48b62b0a06347"
+const clientSecret = "f67857addec046b893a48b62b0a06347";
 
 
 
@@ -31,7 +31,7 @@ function App() {
     }
 
     fetch('https://accounts.spotify.com/api/token', authParameters)
-      .then(result = result.json())
+      .then(result => result.json())
       .then(data => setAccessToken(data.access_token))
 
   }, []);
