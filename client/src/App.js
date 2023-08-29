@@ -61,7 +61,7 @@ function App() {
       .then(data => {return data.users.items[0].id})
 
     console.log("User ID is" + userID);
-    var playlists = await.fetch('')
+    var playlists = await fetch('')
 
     // Get request with User ID grab all playlists from that user
 
