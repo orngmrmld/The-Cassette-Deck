@@ -10,9 +10,9 @@ const typeDefs = gql`
 
   type Post {
     _id: ID!
-    title: String!
+    description: String!
     content: String!
-    author: User!
+    comments: [Comment]
 
   }
  
