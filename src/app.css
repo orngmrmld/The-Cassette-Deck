@@ -1,0 +1,14 @@
+/* Add spacing between components */
+.spacer {
+  height: 20px; /* Adjust as needed */
+}
+
+/* Add your global app styles here */
+.app {
+  text-align: center;
+}
+
+/* CSS file or style block in your HTML */
+.navbar-title {
+  font-family: 'Prata', serif;
+}
