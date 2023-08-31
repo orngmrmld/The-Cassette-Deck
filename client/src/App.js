@@ -107,7 +107,7 @@ function App() {
   const [searchInput, setSearchInput] = useState('');
   //  const [accessToken, setAccessToken] = useState('');
 
-  useEffect(() => {
+  useEffect ( async() => {
     // Fetch comments from your backend API here and set them using setComments
     // For now, let's simulate comments
     const simulatedComments = [
@@ -115,7 +115,7 @@ function App() {
       { id: 2, author: 'Alice', text: 'I agree with you.' },
     ];
     setComments(simulatedComments);
-
+    const accessToken = await getAccessToken(clientId, code);
     // var authParameters = {
     //   method: 'POST',
     //   headers: {
