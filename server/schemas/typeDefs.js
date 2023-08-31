@@ -10,24 +10,38 @@ const typeDefs = gql`
 
   type Post {
     _id: ID!
-    description: String!
-    content: String!
+    postText: String!
+    postAuthor: String
     comments: [Comment]
-
   }
  
   type Comment {
     _id: ID!
-    text: String!
-    author: User!
+    commentText: String!
+    commentAuthor: String!
     post: Post!
   }
 
+  type Auth {
+    token: ID!
+    user: User
+  }
+
   type Query {
-    user: [User]
-    post: [Post]
-    comment: [Comment]
-    
+    users: [User]
+    user(username: String!, email: String!): User 
+    posts(username: String): [Post]
+    post(postId: ID!): Post
+    me: User
+  }
+
+  type Mutation {
+    addUser(username: String!, email: String!, password: String!): Auth
+    login(email: String!, password: String!): Auth
+    addPost(postText: String!): Post
+    addComment(postId: ID!, commentText: String!): Post
+    removePost(postId: ID!): Post
+    removeComment(postId: ID!, commentId: ID!): Post
   }
 `;
 
