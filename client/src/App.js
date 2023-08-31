@@ -210,7 +210,7 @@ function App() {
         </Container>
         <div className="comments-section">
           {comments.map(comment => (
-            <CommentBubble key={comment.id} author={comment.author} text={comment.text} />
+            <CommentBubble key={comment.id} imgUrl= {document.getElementById("imgUrl").innerText} author={comment.author} text={comment.text} />
           ))}
         </div>
         <div className="comment-input">
