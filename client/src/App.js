@@ -11,14 +11,29 @@ const clientId = "3864bcca1c1d4ceeae0bb170d9dc0fca";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 
+//move code flow to app
+
+async function callAuth(){
 if (!code) {
   redirectToAuthCodeFlow(clientId);
-} else {
+} else if(code) {
   const accessToken = await getAccessToken(clientId, code);
   const profile = await fetchProfile(accessToken);
   console.log(profile);
   populateUI(profile);
+} else {
+  console.log()
 }
+
+}
+// if (!code) {
+//   redirectToAuthCodeFlow(clientId);
+// } else {
+//   const accessToken = await getAccessToken(clientId, code);
+//   const profile = await fetchProfile(accessToken);
+//   console.log(profile);
+//   populateUI(profile);
+// }
 
 export async function redirectToAuthCodeFlow(clientId) {
   const verifier = generateCodeVerifier(128);
@@ -29,7 +44,7 @@ export async function redirectToAuthCodeFlow(clientId) {
   const params = new URLSearchParams();
   params.append("client_id", clientId);
   params.append("response_type", "code");
-  params.append("redirect_uri", "https://the-cassette-deck-8f7eb67739f4.herokuapp.com/");
+  params.append("redirect_uri", "http://localhost:3000/callback");
   params.append("scope", "user-read-private user-read-email");
   params.append("code_challenge_method", "S256");
   params.append("code_challenge", challenge);
@@ -64,7 +79,7 @@ export async function getAccessToken(clientId, code) {
   params.append("client_id", clientId);
   params.append("grant_type", "authorization_code");
   params.append("code", code);
-  params.append("redirect_uri", "https://the-cassette-deck-8f7eb67739f4.herokuapp.com/");
+  params.append("redirect_uri", "http://localhost:3000/callback");
   params.append("code_verifier", verifier);
 
   const result = await fetch("https://accounts.spotify.com/api/token", {
@@ -92,7 +107,7 @@ function populateUI(profile) {
     profileImage.src = profile.images[0].url;
     document.getElementById("avatar").appendChild(profileImage);
     document.getElementById("imgUrl").innerText = profile.images[0].url;
-  }
+  } else { console.log("Image does not exist")}
   document.getElementById("id").innerText = profile.id;
   document.getElementById("email").innerText = profile.email;
   document.getElementById("uri").innerText = profile.uri;
@@ -104,7 +119,7 @@ function populateUI(profile) {
 function App() {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
-  const [searchInput, setSearchInput] = useState('');
+  //const [searchInput, setSearchInput] = useState('');
   //  const [accessToken, setAccessToken] = useState('');
 
   useEffect(() => {
@@ -133,41 +148,42 @@ function App() {
   const handleSubmit = () => {
     if (newComment.trim() === '') return;
     // For now, let's simulate adding a new comment
-    const newCommentObj = { id: Date.now(), author: 'You', text: newComment };
+    const newCommentObj = { id: Date.now(), imgUrl: document.getElementById("imgUrl").innerText, author: document.getElementById("id").innerText, text: newComment };
     setComments([...comments, newCommentObj]);
     setNewComment('');
+    
   };
 
   //search function to find playlist
-  async function search() {
-    console.log("search for " + searchInput);
-    const accessToken = await getAccessToken(clientId, code);
-    // Get request using search to get the User ID
-    var searchParameters = {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`
-      }
-    }
-    var playlistID = await fetch('https://api.spotify.com/v1/search?q=' + searchInput + '&type=artist', searchParameters)
-      .then(response => response.json())
-      .then(data => console.log(data))
+  // async function search() {
+  //   console.log("search for " + searchInput);
+  //   const accessToken = await getAccessToken(clientId, code);
+  //   // Get request using search to get the User ID
+  //   var searchParameters = {
+  //     method: 'GET',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${accessToken}`
+  //     }
+  //   }
+  //   var playlistID = await fetch('https://api.spotify.com/v1/search?q=' + searchInput + '&type=artist', searchParameters)
+  //     .then(response => response.json())
+  //     .then(data => console.log(data))
 
-    // console.log("User ID is" + userID);
-    // var playlists = await.fetch('')
+  //   // console.log("User ID is" + userID);
+  //   // var playlists = await.fetch('')
 
-    //get playlist by playlist id 
-    // var playlist = await fetch('https://api.spotify.com/v1/playlists/' + playlistID, searchParameters)
-    //   .then(response => response.json())
+  //   //get playlist by playlist id 
+  //   // var playlist = await fetch('https://api.spotify.com/v1/playlists/' + playlistID, searchParameters)
+  //   //   .then(response => response.json())
 
-    // // Get request with User ID grab all playlists from that user
+  //   // // Get request with User ID grab all playlists from that user
 
-    // // Display playlist cover art
-    // var coverArt = await fetch('https://api.spotify.com/v1/playlists/' + playlistID + 'images', searchParameters)
-    //   .then(response => response.json())
-  }
+  //   // // Display playlist cover art
+  //   // var coverArt = await fetch('https://api.spotify.com/v1/playlists/' + playlistID + 'images', searchParameters)
+  //   //   .then(response => response.json())
+  // }
 
 
   return (
@@ -177,25 +193,25 @@ function App() {
         <p>Welcome to 'The Cassette Deck' social platform.</p>
         <Container>
           <InputGroup className="mb-3" size="lg">
-            <FormControl
+            {/* <FormControl
               placeholder="Search for Playlist"
               type="input"
               onKeyDown={event => {
                 if (event.key === 'Enter') {
                   search();
-
+                  callAuth();
                 }
               }}
               onChange={event => setSearchInput(event.target.value)}
-            />
-            <Button onClick={search}>
-              Search
+            /> */}
+            <Button onClick={(callAuth)}>
+              Populate Profile
             </Button>
           </InputGroup>
         </Container>
         <div className="comments-section">
           {comments.map(comment => (
-            <CommentBubble key={comment.id} author={comment.author} text={comment.text} />
+            <CommentBubble key={comment.id} imgUrl={document.getElementById("avatar")} author={comment.author} text={comment.text} />
           ))}
         </div>
         <div className="comment-input">
@@ -211,4 +227,6 @@ function App() {
     </div>
   );
 }
+
+export {callAuth};
 export default App;
