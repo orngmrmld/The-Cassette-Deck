@@ -148,9 +148,10 @@ function App() {
   const handleSubmit = () => {
     if (newComment.trim() === '') return;
     // For now, let's simulate adding a new comment
-    const newCommentObj = { id: Date.now(), author: document.getElementById("id").innerText, text: newComment };
+    const newCommentObj = { id: Date.now(), imgUrl: document.getElementById("imgUrl").innerText, author: document.getElementById("id").innerText, text: newComment };
     setComments([...comments, newCommentObj]);
     setNewComment('');
+    
   };
 
   //search function to find playlist
@@ -210,7 +211,7 @@ function App() {
         </Container>
         <div className="comments-section">
           {comments.map(comment => (
-            <CommentBubble key={comment.id} imgUrl= {document.getElementById("imgUrl").innerText} author={comment.author} text={comment.text} />
+            <CommentBubble key={comment.id} imgUrl={document.getElementById("avatar")} author={comment.author} text={comment.text} />
           ))}
         </div>
         <div className="comment-input">
