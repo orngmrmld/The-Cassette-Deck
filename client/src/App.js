@@ -1,6 +1,8 @@
 import './App.css';
+import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, InputGroup, FormControl, Button, Row, Card } from 'react-bootstrap';
+
 import { useState, useEffect } from 'react'; import './App.css';
 import CommentBubble from './components/commentbubble';
 import Header from './components/header';
@@ -10,125 +12,12 @@ import {
   useMutation,
   useQuery,
 } from '@apollo/client';
-// import { setContext } from '@apollo/client/link/context';
-
 import { QUERY_POSTS } from './utils/queries';
 import { ADD_POST } from './utils/mutations';
+import { useState, useEffect } from 'react';
+import CommentBubble from './components/commentbubble';
+import Header from './components/header';
 
-// import Auth from '../utils/auth';
-
-//move code flow to app
-
-// async function callAuth() {
-//   const [addPost, { error }] = useMutation(ADD_POST);
-
-//   // code block that does an authorization check to get info from spotify
-//   const params = new URLSearchParams(window.location.search);
-//   const code = params.get("code");
-//   const clientId = "3864bcca1c1d4ceeae0bb170d9dc0fca";
-//   //const clientSecret = "f67857addec046b893a48b62b0a06347";
-
-//   if (!code) {
-//     redirectToAuthCodeFlow(clientId);
-//   } else if (code) {
-//     const accessToken = await getAccessToken(clientId, code);
-//     const profile = await fetchProfile(accessToken);
-//     console.log(profile);
-//     populateUI(profile);
-//   } else {
-//     console.log()
-//   }
-
-// }
-// // if (!code) {
-// //   redirectToAuthCodeFlow(clientId);
-// // } else {
-// //   const accessToken = await getAccessToken(clientId, code);
-// //   const profile = await fetchProfile(accessToken);
-// //   console.log(profile);
-// //   populateUI(profile);
-// // }
-
-// export async function redirectToAuthCodeFlow(clientId) {
-//   const verifier = generateCodeVerifier(128);
-//   const challenge = await generateCodeChallenge(verifier);
-
-//   localStorage.setItem("verifier", verifier);
-
-//   const params = new URLSearchParams();
-//   params.append("client_id", clientId);
-//   params.append("response_type", "code");
-//   params.append("redirect_uri", "http://localhost:3000/callback");
-//   params.append("scope", "user-read-private user-read-email");
-//   params.append("code_challenge_method", "S256");
-//   params.append("code_challenge", challenge);
-
-//   document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
-// }
-
-// function generateCodeVerifier(length) {
-//   let text = '';
-//   let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-//   for (let i = 0; i < length; i++) {
-//     text += possible.charAt(Math.floor(Math.random() * possible.length));
-//   }
-//   return text;
-// }
-
-// async function generateCodeChallenge(codeVerifier) {
-//   const data = new TextEncoder().encode(codeVerifier);
-//   const digest = await window.crypto.subtle.digest('SHA-256', data);
-//   return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))
-//     .replace(/\+/g, '-')
-//     .replace(/\//g, '_')
-//     .replace(/=+$/, '');
-// }
-
-
-// export async function getAccessToken(clientId, code) {
-//   const verifier = localStorage.getItem("verifier");
-
-//   const params = new URLSearchParams();
-//   params.append("client_id", clientId);
-//   params.append("grant_type", "authorization_code");
-//   params.append("code", code);
-//   params.append("redirect_uri", "http://localhost:3000/callback");
-//   params.append("code_verifier", verifier);
-
-//   const result = await fetch("https://accounts.spotify.com/api/token", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-//     body: params
-//   });
-
-//   const { access_token } = await result.json();
-//   return access_token;
-// }
-
-// async function fetchProfile(token) {
-//   const result = await fetch("https://api.spotify.com/v1/me", {
-//     method: "GET", headers: { Authorization: `Bearer ${token}` }
-//   });
-
-//   return await result.json();
-// }
-
-// function populateUI(profile) {
-//   document.getElementById("displayName").innerText = profile.display_name;
-//   if (profile.images[0]) {
-//     const profileImage = new Image(200, 200);
-//     profileImage.src = profile.images[0].url;
-//     document.getElementById("avatar").appendChild(profileImage);
-//     document.getElementById("imgUrl").innerText = profile.images[0].url;
-//   } else { console.log("Image does not exist") }
-//   document.getElementById("id").innerText = profile.id;
-//   document.getElementById("email").innerText = profile.email;
-//   document.getElementById("uri").innerText = profile.uri;
-//   document.getElementById("uri").setAttribute("href", profile.external_urls.spotify);
-//   document.getElementById("url").innerText = profile.href;
-//   document.getElementById("url").setAttribute("href", profile.href);
-// }
 
 function App() {
   const {loading, data} = useQuery(QUERY_POSTS)
@@ -275,83 +164,82 @@ function App() {
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
-  //const [searchInput, setSearchInput] = useState('');
-  //  const [accessToken, setAccessToken] = useState('');
+  const CLIENT_ID = "3864bcca1c1d4ceeae0bb170d9dc0fca";
+  const REDIRECT_URI = "http://localhost:3000/callback";
+  const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
+  const RESPONSE_TYPE = "token";
+  const CLIENT_SECRET = "f67857addec046b893a48b62b0a06347";
+
+  const [token, setToken] = useState("")
+  const [searchKey, setSearchKey] = useState("")
+  const [playlists, setPlaylist] = useState([])
 
   useEffect(() => {
-    // Fetch comments from your backend API here and set them using setComments
-    // For now, let's simulate comments
-    // const simulatedComments = [
-    //   { id: 1, author: 'John', text: 'Great post!' },
-    //   { id: 2, author: 'Alice', text: 'I agree with you.' },
-    // ];
-    // setComments(simulatedComments);
+
       if (postData?.length > 0) {
         setComments(postData)
       }
 
     console.log(postData)
 
-    // var authParameters = {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/x-www-form-urlencoded'
-    //   },
-    //   body: 'grant_type=client_credentials&client_id=' + clientId + '&client_secret=' + clientSecret
-    // }
 
-    // fetch('https://accounts.spotify.com/api/token', authParameters)
-    //   .then(result => result.json())
-    //   .then(data => setAccessToken(data.access_token))
+    const hash = window.location.hash
+    let token = window.localStorage.getItem("token")
+
+    if (!token && hash) {
+        token = hash.substring(1).split("&").find(elem => elem.startsWith("access_token")).split("=")[1]
+
 
   }, [postData]);
+
+        window.location.hash = ""
+        window.localStorage.setItem("token", token)
+    }
+
+    setToken(token)
+  }, []);
+
 
   const handleSubmit = async () => {
     if (newComment.trim() === '') return;
 
     const response = await addPost({ variables: { postText: newComment } })
 
-    // For now, let's simulate adding a new comment
     const newCommentObj = { id: Date.now(), 
-      // imgUrl: document.getElementById("imgUrl").innerText, 
-      // author: document.getElementById("id").innerText,
        text: newComment };
+
     setComments([...comments, newCommentObj]);
     setNewComment('');
 
   };
 
-  //search function to find playlist
-  // async function search() {
-  //   console.log("search for " + searchInput);
-  //   const accessToken = await getAccessToken(clientId, code);
-  //   // Get request using search to get the User ID
-  //   var searchParameters = {
-  //     method: 'GET',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Bearer ${accessToken}`
-  //     }
-  //   }
-  //   var playlistID = await fetch('https://api.spotify.com/v1/search?q=' + searchInput + '&type=artist', searchParameters)
-  //     .then(response => response.json())
-  //     .then(data => console.log(data))
+  const logout = () => {
+    setToken("")
+    window.localStorage.removeItem("token")
+}
+const searchPlaylists = async (e) => {
+  e.preventDefault()
+  const {data} = await axios.get("https://api.spotify.com/v1/search", {
+      headers: {
+          Authorization: `Bearer ${token}`
+      },
+      params: {
+          q: searchKey,
+          type: "playlist"
+      }
+  })
 
-  //   // console.log("User ID is" + userID);
-  //   // var playlists = await.fetch('')
+  setPlaylist(data.playlists.items)
+}
 
-  //   //get playlist by playlist id 
-  //   // var playlist = await fetch('https://api.spotify.com/v1/playlists/' + playlistID, searchParameters)
-  //   //   .then(response => response.json())
-
-  //   // // Get request with User ID grab all playlists from that user
-
-  //   // // Display playlist cover art
-  //   // var coverArt = await fetch('https://api.spotify.com/v1/playlists/' + playlistID + 'images', searchParameters)
-  //   //   .then(response => response.json())
-  // }
-
+const renderPlaylist = () => {
+  return playlists.map(playlist => (
+      <div key={playlist.id}>
+          {playlist.images.height ? <img width={"50%"} src={playlist.images[0].url} alt=""/> : <div>No Image</div>}
+          {playlist.name}
+      </div>
+  ))
+}
 
   return (
     // <ApolloProvider client={client}>
@@ -372,11 +260,20 @@ function App() {
               }}
               onChange={event => setSearchInput(event.target.value)}
             /> */}
-            <Button onClick={(callAuth)}>
-              Populate Profile
-            </Button>
+
           </InputGroup>
         </Container>
+        {!token ?
+                    <a href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>Login
+                        to Spotify</a>
+                    : <button onClick={logout}>Logout</button>}
+         
+         <form onSubmit={searchPlaylists}>
+         <input type="text" onChange={e => setSearchKey(e.target.value)}/>
+    <button type={"submit"}>Search</button>
+         </form>         
+         {renderPlaylist()}
+
         <div className="comments-section">
           {comments.map(comment => (
             <CommentBubble key={comment.postText} 
@@ -400,5 +297,4 @@ function App() {
   );
 }
 
-// export { callAuth };
 export default App;
