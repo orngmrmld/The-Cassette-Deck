@@ -1,0 +1,26 @@
+.create-post-prompt {
+    background-color: white;
+    width: 300px; /* Adjust the width as needed */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: fixed;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Center the prompt */
+    z-index: 999; /* Ensure it's on top of other content */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.create-post-prompt button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.create-post-prompt button:hover {
+    background-color: #0056b3;
+}
