@@ -1,0 +1,13 @@
+.feed {
+    background-color: #000000ca;
+    padding: 20px;
+    margin-top: 20px; 
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 400px;
+    margin: 20px auto; 
+    min-height: 600px;
+    margin-bottom: 100px;
+  }
+  

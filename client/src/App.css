@@ -1,56 +1,42 @@
-/* App.css */
-/* Add your global app styles here */
 .App {
   text-align: center;
 }
 
-/* Header.css */
-/* Add styles for the header component here */
-.header {
-  background-color: #333;
-  color: white;
-  padding: 20px;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
 
-.header h1 {
-  font-size: 24px;
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
 
-.nav ul {
-  list-style: none;
-  padding: 0;
-}
-
-.nav li {
-  display: inline;
-  margin-right: 20px;
-}
-
-.comments-section {
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
-}
-.comment-input {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-}
-.comment-input input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 10px;
-}
-.comment-input button {
-  padding: 8px 16px;
-  background-color: #007BFF;
+  font-size: calc(10px + 2vmin);
   color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
+.App-main {
+  background-color: #000000;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
