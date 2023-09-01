@@ -4,6 +4,11 @@ import { Container, InputGroup, FormControl, Button, Row, Card } from 'react-boo
 import { useState, useEffect } from 'react';import './App.css';
 import CommentBubble from './components/commentbubble';
 import Header from './components/header';
+import Feed from './components/feed';
+import Body from './components/body';
+import Footer from './components/footer';
+import SearchBar from './components/searchbar';
+import PostPrompt from './components/postprompt'; 
 const clientId = "3864bcca1c1d4ceeae0bb170d9dc0fca";
 //const clientSecret = "f67857addec046b893a48b62b0a06347";
 
@@ -116,7 +121,39 @@ function populateUI(profile) {
   document.getElementById("url").setAttribute("href", profile.href);
 }
 
+export function Homepage() {
+  
+  const [isPromptOpen, setIsPromptOpen] = useState(false);
+  
+  const openPrompt = () => {
+    console.log('Opening prompt'); 
+    setIsPromptOpen(true);
+  };
+
+  const closePrompt = () => {
+    console.log('Closing prompt'); 
+    setIsPromptOpen(false);
+  };
+
+  return (
+    <div className="App">
+      <Header />
+      <SearchBar />
+      <Feed />
+      <Body />
+      <Footer />
+
+      {/* Button to open the Create New Post prompt */}
+      <button onClick={openPrompt}>Create New Post</button>
+
+      {/* Conditionally render the CreatePostPrompt */}
+      {isPromptOpen && <PostPrompt onClose={closePrompt} />}
+    </div>
+  )
+}
+
 function App() {
+  
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   //const [searchInput, setSearchInput] = useState('');
@@ -142,8 +179,9 @@ function App() {
     // fetch('https://accounts.spotify.com/api/token', authParameters)
     //   .then(result => result.json())
     //   .then(data => setAccessToken(data.access_token))
-
   }, []);
+   
+
 
   const handleSubmit = () => {
     if (newComment.trim() === '') return;
@@ -211,7 +249,7 @@ function App() {
         </Container>
         <div className="comments-section">
           {comments.map(comment => (
-            <CommentBubble key={comment.id} imgUrl={document.getElementById("avatar")} author={comment.author} text={comment.text} />
+            <CommentBubble key={comment.id} profImg={document.getElementById("avatar")} author={comment.author} text={comment.text} />
           ))}
         </div>
         <div className="comment-input">

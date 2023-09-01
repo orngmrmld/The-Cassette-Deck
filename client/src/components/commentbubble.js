@@ -1,12 +1,13 @@
 import React from 'react';
 import './commentbubble.css';
-const CommentBubble = ({ imgUrl, author, text }) => {
+import profImg from './profile-picture.jpg'
+
+const CommentBubble = ({ author, text }) => {
   return (
     <div className="comment-bubble">
-      <li> <img src={imgUrl} /> </li>
+      <div> <img className="profile" src={profImg} /> </div>
       <div className="comment-author">{author}</div>
       <div className="comment-text">{text}</div>
-      
     </div>
   );
 };
