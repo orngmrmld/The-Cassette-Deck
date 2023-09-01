@@ -1,16 +1,14 @@
 // Header.js
 import React from 'react';
 import './header.css';
+import logo from './images/logo.png';
 
 function Header() {
   return (
     <header className="header">
-      <h1 className="graffiti-title">The Cassette Deck</h1>
-      <nav className="nav">
-        <ul>
-          <li>Home</li>
-          <li>Friends</li>
-
+      <img src={logo} alt="Your Logo" className="logo" />
+      <nav className="navigation">
+        <ul className="nav-list">
         </ul>
       </nav>
     </header>
