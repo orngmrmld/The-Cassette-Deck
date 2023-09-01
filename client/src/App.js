@@ -1,122 +1,278 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, InputGroup, FormControl, Button, Row, Card } from 'react-bootstrap';
-import { useState, useEffect } from 'react';import './App.css';
+import { useState, useEffect } from 'react'; import './App.css';
 import CommentBubble from './components/commentbubble';
 import Header from './components/header';
-const clientId = "3864bcca1c1d4ceeae0bb170d9dc0fca";
-//const clientSecret = "f67857addec046b893a48b62b0a06347";
 
-// code block that does an authorization check to get info from spotify
-const params = new URLSearchParams(window.location.search);
-const code = params.get("code");
+
+import {
+  useMutation,
+  useQuery,
+} from '@apollo/client';
+// import { setContext } from '@apollo/client/link/context';
+
+import { QUERY_POSTS } from './utils/queries';
+import { ADD_POST } from './utils/mutations';
+
+// import Auth from '../utils/auth';
 
 //move code flow to app
 
-async function callAuth(){
-if (!code) {
-  redirectToAuthCodeFlow(clientId);
-} else if(code) {
-  const accessToken = await getAccessToken(clientId, code);
-  const profile = await fetchProfile(accessToken);
-  console.log(profile);
-  populateUI(profile);
-} else {
-  console.log()
-}
+// async function callAuth() {
+//   const [addPost, { error }] = useMutation(ADD_POST);
 
-}
-// if (!code) {
-//   redirectToAuthCodeFlow(clientId);
-// } else {
-//   const accessToken = await getAccessToken(clientId, code);
-//   const profile = await fetchProfile(accessToken);
-//   console.log(profile);
-//   populateUI(profile);
+//   // code block that does an authorization check to get info from spotify
+//   const params = new URLSearchParams(window.location.search);
+//   const code = params.get("code");
+//   const clientId = "3864bcca1c1d4ceeae0bb170d9dc0fca";
+//   //const clientSecret = "f67857addec046b893a48b62b0a06347";
+
+//   if (!code) {
+//     redirectToAuthCodeFlow(clientId);
+//   } else if (code) {
+//     const accessToken = await getAccessToken(clientId, code);
+//     const profile = await fetchProfile(accessToken);
+//     console.log(profile);
+//     populateUI(profile);
+//   } else {
+//     console.log()
+//   }
+
+// }
+// // if (!code) {
+// //   redirectToAuthCodeFlow(clientId);
+// // } else {
+// //   const accessToken = await getAccessToken(clientId, code);
+// //   const profile = await fetchProfile(accessToken);
+// //   console.log(profile);
+// //   populateUI(profile);
+// // }
+
+// export async function redirectToAuthCodeFlow(clientId) {
+//   const verifier = generateCodeVerifier(128);
+//   const challenge = await generateCodeChallenge(verifier);
+
+//   localStorage.setItem("verifier", verifier);
+
+//   const params = new URLSearchParams();
+//   params.append("client_id", clientId);
+//   params.append("response_type", "code");
+//   params.append("redirect_uri", "http://localhost:3000/callback");
+//   params.append("scope", "user-read-private user-read-email");
+//   params.append("code_challenge_method", "S256");
+//   params.append("code_challenge", challenge);
+
+//   document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
 // }
 
-export async function redirectToAuthCodeFlow(clientId) {
-  const verifier = generateCodeVerifier(128);
-  const challenge = await generateCodeChallenge(verifier);
+// function generateCodeVerifier(length) {
+//   let text = '';
+//   let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-  localStorage.setItem("verifier", verifier);
+//   for (let i = 0; i < length; i++) {
+//     text += possible.charAt(Math.floor(Math.random() * possible.length));
+//   }
+//   return text;
+// }
 
-  const params = new URLSearchParams();
-  params.append("client_id", clientId);
-  params.append("response_type", "code");
-  params.append("redirect_uri", "http://localhost:3000/callback");
-  params.append("scope", "user-read-private user-read-email");
-  params.append("code_challenge_method", "S256");
-  params.append("code_challenge", challenge);
-
-  document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
-}
-
-function generateCodeVerifier(length) {
-  let text = '';
-  let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (let i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-}
-
-async function generateCodeChallenge(codeVerifier) {
-  const data = new TextEncoder().encode(codeVerifier);
-  const digest = await window.crypto.subtle.digest('SHA-256', data);
-  return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=+$/, '');
-}
+// async function generateCodeChallenge(codeVerifier) {
+//   const data = new TextEncoder().encode(codeVerifier);
+//   const digest = await window.crypto.subtle.digest('SHA-256', data);
+//   return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))
+//     .replace(/\+/g, '-')
+//     .replace(/\//g, '_')
+//     .replace(/=+$/, '');
+// }
 
 
-export async function getAccessToken(clientId, code) {
-  const verifier = localStorage.getItem("verifier");
+// export async function getAccessToken(clientId, code) {
+//   const verifier = localStorage.getItem("verifier");
 
-  const params = new URLSearchParams();
-  params.append("client_id", clientId);
-  params.append("grant_type", "authorization_code");
-  params.append("code", code);
-  params.append("redirect_uri", "http://localhost:3000/callback");
-  params.append("code_verifier", verifier);
+//   const params = new URLSearchParams();
+//   params.append("client_id", clientId);
+//   params.append("grant_type", "authorization_code");
+//   params.append("code", code);
+//   params.append("redirect_uri", "http://localhost:3000/callback");
+//   params.append("code_verifier", verifier);
 
-  const result = await fetch("https://accounts.spotify.com/api/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params
-  });
+//   const result = await fetch("https://accounts.spotify.com/api/token", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/x-www-form-urlencoded" },
+//     body: params
+//   });
 
-  const { access_token } = await result.json();
-  return access_token;
-}
+//   const { access_token } = await result.json();
+//   return access_token;
+// }
 
-async function fetchProfile(token) {
-  const result = await fetch("https://api.spotify.com/v1/me", {
-    method: "GET", headers: { Authorization: `Bearer ${token}` }
-  });
+// async function fetchProfile(token) {
+//   const result = await fetch("https://api.spotify.com/v1/me", {
+//     method: "GET", headers: { Authorization: `Bearer ${token}` }
+//   });
 
-  return await result.json();
-}
+//   return await result.json();
+// }
 
-function populateUI(profile) {
-  document.getElementById("displayName").innerText = profile.display_name;
-  if (profile.images[0]) {
-    const profileImage = new Image(200, 200);
-    profileImage.src = profile.images[0].url;
-    document.getElementById("avatar").appendChild(profileImage);
-    document.getElementById("imgUrl").innerText = profile.images[0].url;
-  } else { console.log("Image does not exist")}
-  document.getElementById("id").innerText = profile.id;
-  document.getElementById("email").innerText = profile.email;
-  document.getElementById("uri").innerText = profile.uri;
-  document.getElementById("uri").setAttribute("href", profile.external_urls.spotify);
-  document.getElementById("url").innerText = profile.href;
-  document.getElementById("url").setAttribute("href", profile.href);
-}
+// function populateUI(profile) {
+//   document.getElementById("displayName").innerText = profile.display_name;
+//   if (profile.images[0]) {
+//     const profileImage = new Image(200, 200);
+//     profileImage.src = profile.images[0].url;
+//     document.getElementById("avatar").appendChild(profileImage);
+//     document.getElementById("imgUrl").innerText = profile.images[0].url;
+//   } else { console.log("Image does not exist") }
+//   document.getElementById("id").innerText = profile.id;
+//   document.getElementById("email").innerText = profile.email;
+//   document.getElementById("uri").innerText = profile.uri;
+//   document.getElementById("uri").setAttribute("href", profile.external_urls.spotify);
+//   document.getElementById("url").innerText = profile.href;
+//   document.getElementById("url").setAttribute("href", profile.href);
+// }
 
 function App() {
+  const {loading, data} = useQuery(QUERY_POSTS)
+  const postData = data?.posts || []
+//   // Construct our main GraphQL API endpoint
+// const httpLink = createHttpLink({
+//   uri: '/graphql',
+// });
+
+// // Construct request middleware that will attach the JWT token to every request as an `authorization` header
+// const authLink = setContext((_, { headers }) => {
+//   // get the authentication token from local storage if it exists
+//   const token = localStorage.getItem('id_token');
+//   // return the headers to the context so httpLink can read them
+//   return {
+//     headers: {
+//       ...headers,
+//       authorization: token ? `Bearer ${token}` : '',
+//     },
+//   };
+// });
+
+// const client = new ApolloClient({
+//   // Set up our client to execute the `authLink` middleware prior to making the request to our GraphQL API
+//   link: authLink.concat(httpLink),
+//   cache: new InMemoryCache(),
+// });
+
+  const [addPost, { error }] = useMutation(ADD_POST);
+
+
+
+  async function callAuth() {
+  
+  
+    // code block that does an authorization check to get info from spotify
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+    const clientId = "3864bcca1c1d4ceeae0bb170d9dc0fca";
+    //const clientSecret = "f67857addec046b893a48b62b0a06347";
+  
+    if (!code) {
+      redirectToAuthCodeFlow(clientId);
+    } else if (code) {
+      const accessToken = await getAccessToken(clientId, code);
+      const profile = await fetchProfile(accessToken);
+      console.log(profile);
+      populateUI(profile);
+    } else {
+      console.log()
+    }
+  
+  }
+  // if (!code) {
+  //   redirectToAuthCodeFlow(clientId);
+  // } else {
+  //   const accessToken = await getAccessToken(clientId, code);
+  //   const profile = await fetchProfile(accessToken);
+  //   console.log(profile);
+  //   populateUI(profile);
+  // }
+  
+  async function redirectToAuthCodeFlow(clientId) {
+    const verifier = generateCodeVerifier(128);
+    const challenge = await generateCodeChallenge(verifier);
+  
+    localStorage.setItem("verifier", verifier);
+  
+    const params = new URLSearchParams();
+    params.append("client_id", clientId);
+    params.append("response_type", "code");
+    params.append("redirect_uri", "http://localhost:3000/callback");
+    params.append("scope", "user-read-private user-read-email");
+    params.append("code_challenge_method", "S256");
+    params.append("code_challenge", challenge);
+  
+    document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
+  }
+  
+  function generateCodeVerifier(length) {
+    let text = '';
+    let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  
+    for (let i = 0; i < length; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  }
+  
+  async function generateCodeChallenge(codeVerifier) {
+    const data = new TextEncoder().encode(codeVerifier);
+    const digest = await window.crypto.subtle.digest('SHA-256', data);
+    return btoa(String.fromCharCode.apply(null, [...new Uint8Array(digest)]))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+  }
+  
+  
+ async function getAccessToken(clientId, code) {
+    const verifier = localStorage.getItem("verifier");
+  
+    const params = new URLSearchParams();
+    params.append("client_id", clientId);
+    params.append("grant_type", "authorization_code");
+    params.append("code", code);
+    params.append("redirect_uri", "http://localhost:3000/callback");
+    params.append("code_verifier", verifier);
+  
+    const result = await fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params
+    });
+  
+    const { access_token } = await result.json();
+    return access_token;
+  }
+  
+  async function fetchProfile(token) {
+    const result = await fetch("https://api.spotify.com/v1/me", {
+      method: "GET", headers: { Authorization: `Bearer ${token}` }
+    });
+  
+    return await result.json();
+  }
+  
+  function populateUI(profile) {
+    document.getElementById("displayName").innerText = profile.display_name;
+    if (profile.images[0]) {
+      const profileImage = new Image(200, 200);
+      profileImage.src = profile.images[0].url;
+      document.getElementById("avatar").appendChild(profileImage);
+      document.getElementById("imgUrl").innerText = profile.images[0].url;
+    } else { console.log("Image does not exist") }
+    document.getElementById("id").innerText = profile.id;
+    document.getElementById("email").innerText = profile.email;
+    document.getElementById("uri").innerText = profile.uri;
+    document.getElementById("uri").setAttribute("href", profile.external_urls.spotify);
+    document.getElementById("url").innerText = profile.href;
+    document.getElementById("url").setAttribute("href", profile.href);
+  }
+  
+
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   //const [searchInput, setSearchInput] = useState('');
@@ -125,11 +281,16 @@ function App() {
   useEffect(() => {
     // Fetch comments from your backend API here and set them using setComments
     // For now, let's simulate comments
-    const simulatedComments = [
-      { id: 1, author: 'John', text: 'Great post!' },
-      { id: 2, author: 'Alice', text: 'I agree with you.' },
-    ];
-    setComments(simulatedComments);
+    // const simulatedComments = [
+    //   { id: 1, author: 'John', text: 'Great post!' },
+    //   { id: 2, author: 'Alice', text: 'I agree with you.' },
+    // ];
+    // setComments(simulatedComments);
+      if (postData?.length > 0) {
+        setComments(postData)
+      }
+
+    console.log(postData)
 
     // var authParameters = {
     //   method: 'POST',
@@ -143,15 +304,21 @@ function App() {
     //   .then(result => result.json())
     //   .then(data => setAccessToken(data.access_token))
 
-  }, []);
+  }, [postData]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (newComment.trim() === '') return;
+
+    const response = await addPost({ variables: { postText: newComment } })
+
     // For now, let's simulate adding a new comment
-    const newCommentObj = { id: Date.now(), imgUrl: document.getElementById("imgUrl").innerText, author: document.getElementById("id").innerText, text: newComment };
+    const newCommentObj = { id: Date.now(), 
+      // imgUrl: document.getElementById("imgUrl").innerText, 
+      // author: document.getElementById("id").innerText,
+       text: newComment };
     setComments([...comments, newCommentObj]);
     setNewComment('');
-    
+
   };
 
   //search function to find playlist
@@ -187,6 +354,7 @@ function App() {
 
 
   return (
+    // <ApolloProvider client={client}>
     <div className="App">
       <Header />
       <main>
@@ -211,7 +379,10 @@ function App() {
         </Container>
         <div className="comments-section">
           {comments.map(comment => (
-            <CommentBubble key={comment.id} imgUrl={document.getElementById("avatar")} author={comment.author} text={comment.text} />
+            <CommentBubble key={comment.postText} 
+            // imgUrl={document.getElementById("avatar")} 
+            // author={comment.author}
+             text={comment.postText} />
           ))}
         </div>
         <div className="comment-input">
@@ -225,8 +396,9 @@ function App() {
         </div>
       </main>
     </div>
+    // </ApolloProvider> 
   );
 }
 
-export {callAuth};
+// export { callAuth };
 export default App;

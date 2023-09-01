@@ -15,13 +15,11 @@ query user($username: String!, $email: String!) {
 `;
 
 export const QUERY_POSTS = gql`
-  query getPosts {
-      posts {
-        _id
-        postText
-        postAuthor
-      }
-    }
+query Post {
+  posts {
+    postText
+  }
+}
 `;
 
 export const QUERY_SINGLE_POST = gql`
