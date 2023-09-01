@@ -6,9 +6,8 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [License](#license)
-- [Contributing](#contributing)
-- [Tests](#tests)
-- [Questions](#questions)
+- [Links](#links)
+- [Credits](#credits)
 
 ## Description
 
@@ -19,7 +18,7 @@ So that...they can enjoy and rate my playlists by using the vibe meter
 
 ## Installation
 
-To run locally, clone the github repo link to your local computer. In the CLI, enter npm install to install all necessary packages required. Next, go to the root directory and enter npm run develop to initialize the webpage. 
+To run locally, clone the github repo link to your local computer. In the CLI, enter npm install for the necessary packeges, and npm run install bootstrap react-bootstrap in order to install the bootstrap. After, run npm install axios to install axios. Next, go to the root directory and enter npm run develop to initialize the webpage. 
 
 ## Usage
 
