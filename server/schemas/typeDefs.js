@@ -9,10 +9,9 @@ const typeDefs = gql`
   }
 
   type Post {
-    _id: ID!
+    
     postText: String!
-    postAuthor: String
-    comments: [Comment]
+
   }
  
   type Comment {
@@ -30,7 +29,7 @@ const typeDefs = gql`
   type Query {
     users: [User]
     user(username: String!, email: String!): User 
-    posts(username: String): [Post]
+    posts: [Post]
     post(postId: ID!): Post
     me: User
   }

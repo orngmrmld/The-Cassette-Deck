@@ -11,9 +11,10 @@ const resolvers = {
     user: async (parent, { username }) => {
       return User.findOne({ username })
     },
-    posts: async (parent, { username }) => {
-      const params = username ? { username } : {};
-      return Post.find(params).sort({ createdAt: -1 });
+    posts: async (parent, args) => {
+      return Post.find()
+      // const params = username ? { username } : {};
+      // return Post.find(params).sort({ createdAt: -1 });
     },
     post: async (parent, { postId }) => {
       return Post.findOne({ _id: postId });
@@ -50,20 +51,21 @@ const resolvers = {
       return { token, user };
     },
     addPost: async (parent, { postText }, context) => {
-      if (context.user) {
+      
+      // if (context.user) {
         const post = await Post.create({
           postText,
-          postAuthor: context.user.username,
+          // postAuthor: context.user.username,
         });
 
-        await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $addToSet: { posts: post._id } }
-        );
+        // await User.findOneAndUpdate(
+        //   { _id: context.user._id },
+        //   { $addToSet: { posts: post._id } }
+        // );
 
         return post;
-      }
-      throw new AuthenticationError('You need to be logged in!');
+      // }
+      // throw new AuthenticationError('You need to be logged in!');
     },
     addComment: async (parent, { postId, commentText }, context) => {
       if (context.user) {
